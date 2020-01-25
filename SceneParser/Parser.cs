@@ -43,10 +43,8 @@ namespace SceneParser
             return fileContent;
         }
 
-        private void parseHeaders()
+        private int parseHeaders(SceneBinHeader headerParser)
         {
-            SceneBinHeader headerParser = new SceneBinHeader();
-
             byte[] headerRaw = new byte[0x40];
             Array.Copy(raw, 0, headerRaw, 0, 0x40);
 
@@ -54,7 +52,12 @@ namespace SceneParser
             int scenesCount = headerParser.getTotalSceneBlocks();
             if (DebugMode) Console.WriteLine("Found {0} blocks", scenesCount);
 
-            for(ushort i = 0; i < scenesCount; i++)
+            return scenesCount;
+        }
+
+        private void ReadScenes(SceneBinHeader headerParser)
+        {
+            for (ushort i = 0; i < headerParser.getTotalSceneBlocks(); i++)
             {
                 byte[] decompressed = Compression.decompress(headerParser.getSceneBlockInfo(i), ref raw);
                 Scenes.Add(new Structures.Scene.Scene(decompressed));
@@ -67,7 +70,9 @@ namespace SceneParser
             // read whole file into memory
             readSceneBinFile(SceneBinFilePath, ref raw);
             // read the headers
-            parseHeaders();
+            SceneBinHeader headers = new SceneBinHeader();
+            parseHeaders(headers);
+            ReadScenes(headers);
 
             // destory raw so we're not wasting memory as it's been constructed into object
             raw = null;

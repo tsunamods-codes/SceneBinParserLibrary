@@ -6,5 +6,6 @@ namespace SceneParser.Structures.Scene
 {
     public struct Enemy
     {
+        public int EnemyID { get; set; }
     }
 }
