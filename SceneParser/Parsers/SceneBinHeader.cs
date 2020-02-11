@@ -7,8 +7,8 @@ using System.Text;
 namespace SceneParser.Parsers
 {
     internal class SceneBinHeader {
-        public int[] sceneFileStartLocation { get; private set; }
-        public int[] sceneFileLength { get; private set; }
+        public int[] sceneFileStartLocations { get; private set; }
+        public int[] sceneFileLengths { get; private set; }
         
         public void parseHeader(byte[] header)
         {
@@ -50,18 +50,18 @@ namespace SceneParser.Parsers
                 }
             }
             starts.RemoveAt(starts.Count-1);
-            sceneFileStartLocation = starts.ToArray();
-            sceneFileLength = ends.ToArray();
+            sceneFileStartLocations = starts.ToArray();
+            sceneFileLengths = ends.ToArray();
         }
 
         public Structures.ScenePossitionInfo getSceneBlockInfo(ushort scene_id)
         {
-            return new Structures.ScenePossitionInfo() { Start = sceneFileStartLocation[scene_id], Length = sceneFileLength[scene_id] };
+            return new Structures.ScenePossitionInfo() { Start = sceneFileStartLocations[scene_id], Length = sceneFileLengths[scene_id] };
         }
 
         public int getTotalSceneBlocks()
         {
-            return sceneFileStartLocation.Length;
+            return sceneFileStartLocations.Length;
         }
     }
 }

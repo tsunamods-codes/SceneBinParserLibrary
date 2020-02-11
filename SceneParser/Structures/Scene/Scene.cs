@@ -11,9 +11,9 @@ namespace SceneParser.Structures.Scene
 
         public byte[] raw { get; set; }
 
-        public Scene(byte[] uncompresses)
+        public Scene(byte[] uncompressed)
         {
-            this.raw = uncompresses;
+            this.raw = uncompressed;
         }
 
         public void Parse()
